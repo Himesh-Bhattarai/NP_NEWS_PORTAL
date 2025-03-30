@@ -3,8 +3,6 @@ const { registerUser, login } = require("../controllers/authController");
 const { googleCallback, googleUserAuth, googleLogin } = require("../controllers/googleAuthController");
 const { validateLogin, validateRegister } = require("../middleware/validate");
 const passport = require('passport'); 
-
-
 const router = express.Router();
 
 

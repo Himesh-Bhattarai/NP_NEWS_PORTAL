@@ -5,7 +5,10 @@ const helmet = require("helmet");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const authRoutes = require("./src/routes/authRoutes");
+const contentRoutes = require("./src/routes/contentRoutes");
 const connectDB = require("./config/database");
+const { errorHandler } = require('./src/middleware/errorHandler');
+
 
 require('dotenv').config();
 
@@ -20,6 +23,10 @@ app.use(cookieSession({
     httpOnly: true
 }));
 
+app.use((req, res, next) => {
+    console.log(`Incoming ${req.method} request to ${req.path}`);
+    next();
+});
 
 
 app.use(cors({
@@ -32,9 +39,12 @@ app.use(helmet());
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session()); 
+app.use(errorHandler);
 
 app.use("/api/auth", authRoutes); 
+app.use("/api/content", contentRoutes);
 connectDB();
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
