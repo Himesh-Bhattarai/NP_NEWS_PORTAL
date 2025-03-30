@@ -10,6 +10,7 @@ const connectDB = require("./config/database");
 const { errorHandler } = require('./src/middleware/errorHandler');
 
 
+
 require('dotenv').config();
 
 const app = express();
@@ -39,10 +40,10 @@ app.use(helmet());
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session()); 
-app.use(errorHandler);
 
 app.use("/api/auth", authRoutes); 
 app.use("/api/content", contentRoutes);
+app.use(errorHandler);
 connectDB();
 
 

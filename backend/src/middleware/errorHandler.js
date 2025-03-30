@@ -1,33 +1,40 @@
-// middleware/errorHandler.js
-class NotFoundError extends Error {
-    constructor(message) {
+class AppError extends Error {
+    constructor(message, statusCode) {
         super(message);
-        this.name = 'NotFoundError';
-        this.statusCode = 404;
+        this.statusCode = statusCode;
+        this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+        Error.captureStackTrace(this, this.constructor);
     }
 }
 
-class ValidationError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = 'ValidationError';
-        this.statusCode = 400;
+class BadRequestError extends AppError {
+    constructor(message = 'Bad Request') {
+        super(message, 400);
     }
 }
 
-const errorHandler = (err, req, res, next) => {
-    console.error(err.stack);
+class UnauthorizedError extends AppError {
+    constructor(message = 'Unauthorized') {
+        super(message, 401);
+    }
+}
 
-    const statusCode = err.statusCode || 500;
-    const message = statusCode === 500 ? 'Something went wrong' : err.message;
+class ForbiddenError extends AppError {
+    constructor(message = 'Forbidden') {
+        super(message, 403);
+    }
+}
 
-    res.status(statusCode).json({
-        error: {
-            message,
-            status: statusCode,
-            ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-        }
-    });
+class NotFoundError extends AppError {
+    constructor(message = 'Not Found') {
+        super(message, 404);
+    }
+}
+
+module.exports = {
+    AppError,
+    BadRequestError,
+    UnauthorizedError,
+    ForbiddenError,
+    NotFoundError
 };
-
-module.exports = {errorHandler,NotFoundError,ValidationError};

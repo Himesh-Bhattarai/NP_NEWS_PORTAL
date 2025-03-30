@@ -1,30 +1,34 @@
-// middleware/auth.js
+// src/middleware/auth.js
 const jwt = require('jsonwebtoken');
 const User = require('../models/Users');
 
+// Middleware function
 const auth = async (req, res, next) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
+        const token = req.header('Authorization')?.replace('Bearer ', '');
+        if (!token) throw new Error('No token provided');
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findOne({ _id: decoded.id, 'tokens.token': token });
+        const user = await User.findOne({ _id: decoded.id });
+        if (!user) throw new Error('User not found');
 
-        if (!user) {
-            throw new Error();
-        }
-
-        req.token = token;
         req.user = user;
         next();
     } catch (err) {
-        res.status(401).send({ error: 'Please authenticate' });
+        res.status(401).json({ error: 'Please authenticate' });
     }
 };
 
+// Role check middleware
 const isReporter = (req, res, next) => {
     if (req.user.role !== 'reporter') {
-        return res.status(403).send({ error: 'Access denied. Reporter role required' });
+        return res.status(403).json({ error: 'Reporter access required' });
     }
     next();
 };
 
-module.exports = { auth, isReporter };
+// Named exports
+module.exports = {
+    auth,
+    isReporter
+};

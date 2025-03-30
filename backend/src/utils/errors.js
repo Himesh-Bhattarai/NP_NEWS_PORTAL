@@ -1,9 +1,40 @@
-class NotFoundError extends Error {
-    constructor(message = 'Not Found') {
+class AppError extends Error {
+    constructor(message, statusCode) {
         super(message);
-        this.name = 'NotFoundError';
-        this.statusCode = 404;
+        this.statusCode = statusCode;
+        this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+        Error.captureStackTrace(this, this.constructor);
     }
 }
 
-module.exports = { NotFoundError };
+class BadRequestError extends AppError {
+    constructor(message = 'Bad Request') {
+        super(message, 400);
+    }
+}
+
+class UnauthorizedError extends AppError {
+    constructor(message = 'Unauthorized') {
+        super(message, 401);
+    }
+}
+
+class ForbiddenError extends AppError {
+    constructor(message = 'Forbidden') {
+        super(message, 403);
+    }
+}
+
+class NotFoundError extends AppError {
+    constructor(message = 'Not Found') {
+        super(message, 404);
+    }
+}
+
+module.exports = {
+    AppError,
+    BadRequestError,
+    UnauthorizedError,
+    ForbiddenError,
+    NotFoundError
+};

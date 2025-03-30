@@ -1,6 +1,7 @@
-// routes/contentRoutes.js
 const express = require('express');
 const router = express.Router();
+const { auth, isReporter } = require('../middleware/auth');
+const upload = require('../utils/fileUpload');
 const {
     createContent,
     getAllContent,
@@ -9,25 +10,22 @@ const {
     updateContent,
     deleteContent
 } = require('../controllers/contentController');
-const { auth, isReporter } = require('../middleware/auth');
 const validateContent = require('../middleware/validateContent');
-const upload = require('../utils/fileUpload');
 
-
-//Public routes
+// Public routes
 router.get('/', getAllContent);
-router.get('/:id', getContentById)
+router.get('/:id', getContentById);
 
-router.use(auth, isReporter);
+// Protected reporter routes
+router.use(auth, isReporter); // Applies to all routes below
 
-router.post(
-    '/',
+router.post('/',
     upload.array('media', 5),
     validateContent,
     createContent
 );
 
-router.get('/my-content', getReporterContent);
+router.get('/my/content', getReporterContent);
 router.put('/:id', validateContent, updateContent);
 router.delete('/:id', deleteContent);
 

@@ -1,28 +1,44 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const Users = require("../models/Users");
+const User = require("../models/Users");
+const { NotFoundError, BadRequestError } = require('../middleware/errorHandler');
 
-// New User Register
+// Register New User
 const registerUser = async (req, res) => {
-    try {b 
-        const { username, email, password } = req.body;
+    try {
+        const { username, email, password, role = 'user' } = req.body;
 
-        // Check if user already exists
-        const existingUser = await Users.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
+        // Validation
+        if (!username || !email || !password) {
+            throw new BadRequestError('All fields are required');
         }
 
-        // Hash Password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // Check existing user
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            throw new BadRequestError('User already exists');
+        }
 
-        // Create New User
-        const newUser = new Users({ username, email, password: hashedPassword });
-        await newUser.save();
+        // Create user
+        const user = new User({
+            username,
+            email,
+            password: await bcrypt.hash(password, 10),
+            role
+        });
 
-        res.status(201).json({ message: "User Registered Successfully" });
+        await user.save();
+
+        res.status(201).json({
+            success: true,
+            data: { id: user._id, email: user.email }
+        });
+
     } catch (error) {
-        res.status(500).json({ message: "Internal Server Error", error });
+        res.status(error.statusCode || 500).json({
+            success: false,
+            error: error.message
+        });
     }
 };
 
@@ -31,21 +47,50 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Find user by email
-        const user = await Users.findOne({ email });
-        if (!user) return res.status(404).json({ message: "User not found!" });
+        // Find user
+        const user = await User.findOne({ email });
+        if (!user) {
+            throw new NotFoundError('User not found');
+        }
 
-        // Compare passwords
+        // Verify password
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ message: "Invalid email or password." });
+        if (!isMatch) {
+            throw new BadRequestError('Invalid credentials');
+        }
 
-        // Generate JWT Token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        // Generate token
+        const token = jwt.sign(
+            { id: user._id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
 
-        res.status(200).json({ message: "Login Successful", token });
+        res.json({
+            success: true,
+            data: { token, userId: user._id }
+        });
+
     } catch (error) {
-        res.status(500).json({ message: "Internal Server Error", error });
+        res.status(error.statusCode || 500).json({
+            success: false,
+            error: error.message
+        });
     }
 };
 
-module.exports = { login, registerUser };
+// Token Verification
+const verifyToken = (req, res) => {
+    res.json({
+        success: true,
+        data: {
+            user: {
+                id: req.user._id,
+                role: req.user.role
+            },
+            expiresAt: new Date(req.decodedToken.exp * 1000)
+        }
+    });
+};
+
+module.exports = { registerUser, login, verifyToken };

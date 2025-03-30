@@ -1,30 +1,49 @@
 const Content = require("../models/Content");
-const { NotFoundError } = require('../utils/errors');
+const { NotFoundError } = require('../middleware/errorHandler');
 
 const createContent = async (req, res) => {
     try {
+        console.log('Request Body:', req.body);
+        console.log('Uploaded Files:', req.files);
+
         const { title, body, category, tags, status } = req.body;
+
+        // Manual validation as backup
+        if (!title || !body || !category) {
+            throw new BadRequestError('Title, body and category are required');
+        }
 
         const content = new Content({
             title,
             body,
             author: req.user.id,
-            media: req.files ? req.files.map(file => ({
+            media: req.files?.map(file => ({
                 url: `/uploads/${file.filename}`,
-                type: file.mimetype.split('/')[0]
-            })) : [],
+                type: file.mimetype.split('/')[0],
+                originalname: file.originalname
+            })) || [],
             category,
-            tags: tags?.split(',').map(tag => tag.trim()) || [],
+            tags: Array.isArray(tags) ? tags : tags?.split(',').map(tag => tag.trim()) || [],
             status: status || 'draft'
         });
 
-        await content.save();
-        res.status(201).json(content);
+        const savedContent = await content.save();
+        console.log('Content created:', savedContent._id);
+
+        res.status(201).json({
+            success: true,
+            data: savedContent
+        });
+
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Content creation failed:', error);
+        res.status(error.statusCode || 500).json({
+            success: false,
+            error: error.message,
+            ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
+        });
     }
 };
-
 const getAllContent = async (req, res) => {
     try {
         const content = await Content.find({ status: 'published' })
