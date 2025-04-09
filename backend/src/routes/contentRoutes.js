@@ -19,10 +19,11 @@ router.get('/:id', getContentById);
 // Protected reporter routes
 router.use(auth, isReporter); // Applies to all routes below
 
-router.post('/',
-    upload.array('media', 5),
-    validateContent,
-    createContent
+router.post(
+    '/',
+    upload.array('media', 5),  // Parse form-data FIRST
+    validateContent,          // Then validate
+    createContent             // Finally process
 );
 
 router.get('/my/content', getReporterContent);

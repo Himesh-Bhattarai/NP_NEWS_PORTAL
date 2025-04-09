@@ -23,6 +23,7 @@ import {Progress} from "../ui/progress"
 import {Separator} from "../ui/separator"
 import {Switch} from "../ui/switch"
 
+
 export default function ReporterPage() {
   return (
    <>
@@ -36,8 +37,8 @@ export default function ReporterPage() {
                                   <FileText className="h-6 w-6" />
                               </div>
                               <div>
-                                  <span className="text-xl font-serif font-bold">CHRONICLE</span>
-                                  <span className="text-xs block text-muted-foreground">Reporter Dashboard</span>
+                                  <span className="text-xl font-serif font-bold">NP REVOULTION</span>
+                                  <span className="text-xs block text-muted-foreground">Your voice matter!!</span>
                               </div>
                           </Link>
 
@@ -225,7 +226,7 @@ export default function ReporterPage() {
                                           </div>
                                           <Button className="rounded-none">
                                               <Plus className="h-4 w-4 mr-2" />
-                                              New Article
+                                              <Link to = '/ReporterContent'>ADD NEW CONTENT </Link>
                                           </Button>
                                       </div>
                                   </CardHeader>

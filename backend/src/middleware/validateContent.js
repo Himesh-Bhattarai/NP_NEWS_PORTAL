@@ -20,10 +20,9 @@ const contentSchema = Joi.object({
 }).options({ abortEarly: false });
 
 const validateContent = (req, res, next) => {
-    // Handle multipart form data
-    const data = req.body;
+    const data = { ...req.body };
 
-    // Convert tags string to array if needed
+    // Convert tags to array if needed
     if (typeof data.tags === 'string') {
         data.tags = data.tags.split(',').map(tag => tag.trim());
     }
@@ -35,10 +34,7 @@ const validateContent = (req, res, next) => {
             field: err.path[0],
             message: err.message
         }));
-        return res.status(400).json({
-            success: false,
-            errors
-        });
+        return res.status(400).json({ success: false, errors });
     }
 
     next();

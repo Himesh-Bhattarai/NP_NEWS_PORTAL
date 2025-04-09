@@ -7,7 +7,6 @@ const passport = require("passport");
 const authRoutes = require("./src/routes/authRoutes");
 const contentRoutes = require("./src/routes/contentRoutes");
 const connectDB = require("./config/database");
-const { errorHandler } = require('./src/middleware/errorHandler');
 
 
 
@@ -24,8 +23,8 @@ app.use(cookieSession({
     httpOnly: true
 }));
 
-app.use((req, res, next) => {
-    console.log(`Incoming ${req.method} request to ${req.path}`);
+app.use(function (req, res, next) {
+    console.log('Time:', Date.now());
     next();
 });
 
@@ -43,7 +42,7 @@ app.use(passport.session());
 
 app.use("/api/auth", authRoutes); 
 app.use("/api/content", contentRoutes);
-app.use(errorHandler);
+
 connectDB();
 
 

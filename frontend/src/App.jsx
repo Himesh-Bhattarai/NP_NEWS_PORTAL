@@ -8,6 +8,7 @@ import ClintPage from './components/ClintDash/ClientPage';
 import AuthPortal from './components/AuthPortal';
 import { GoogleOAuthProvider } from '@react-oauth/google'; // Import the provider
 
+
 function App() {
   return (
     <GoogleOAuthProvider clientId="860431053767-q5l78ifrr436ejqbva1jldups1rv98lf.apps.googleusercontent.com">
