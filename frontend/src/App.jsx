@@ -1,7 +1,7 @@
 
 import './index.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from './components/theme-provider';
+import { ThemeProvider } from './components/features/theme-provider';
 import HomePage from './pages/HomePage';
 import ReporterPage from './components/ReporterDash/ReporterPage';
 import ClintPage from './components/ClintDash/ClientPage';
