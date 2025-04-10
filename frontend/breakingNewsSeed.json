@@ -1,0 +1,114 @@
+[
+    {
+        "title": "Earthquake hits Kathmandu Valley",
+        "description": "A 5.4 magnitude earthquake shook the Kathmandu Valley early this morning. People rushed out of their homes...",
+        "createdAt": "2025-04-10T02:30:00Z"
+    },
+    {
+        "title": "Major fire at Baneshwor building",
+        "description": "A massive fire broke out in a commercial building near Baneshwor Chowk at around 3am...",
+        "createdAt": "2025-04-10T03:00:00Z"
+    },
+    
+        {
+            "title": "Heavy rainfall expected in eastern regions",
+            "description": "Met department issues alert for flash floods.",
+            "timestamp": "2025-04-10T04:00:00Z"
+        },
+        {
+            "title": "Earthquake tremors felt in Kathmandu",
+            "description": "No immediate damage reported.",
+            "timestamp": "2025-04-10T02:30:00Z"
+        },
+        {
+            "title": "Fire breaks out in Bhaktapur industrial area",
+            "description": "Firefighters rushed to the scene.",
+            "timestamp": "2025-04-10T06:45:00Z"
+        },
+        {
+            "title": "Highway blocked due to landslide in eastern Nepal",
+            "description": "Travelers advised to avoid the area.",
+            "timestamp": "2025-04-09T14:30:00Z"
+        },
+        {
+            "title": "Protests erupt in Kathmandu over fuel prices",
+            "description": "Heavy police presence in key intersections.",
+            "timestamp": "2025-04-10T01:15:00Z"
+        },
+        {
+            "title": "Government announces public holiday for elections",
+            "description": "All offices will remain closed tomorrow.",
+            "timestamp": "2025-04-09T18:00:00Z"
+        },
+        {
+            "title": "Nepal Airlines flight makes emergency landing",
+            "description": "Technical issue suspected.",
+            "timestamp": "2025-04-10T03:00:00Z"
+        },
+        {
+            "title": "Flood alert in Sunsari district",
+            "description": "River levels rising due to continuous rain.",
+            "timestamp": "2025-04-10T05:00:00Z"
+        },
+        {
+            "title": "Border tension increases in eastern Nepal",
+            "description": "Troop deployment confirmed.",
+            "timestamp": "2025-04-10T06:15:00Z"
+        },
+        {
+            "title": "Power outage in multiple districts",
+            "description": "Restoration expected by evening.",
+            "timestamp": "2025-04-09T20:30:00Z"
+        },
+        {
+            "title": "Prime Minister to address the nation tonight",
+            "description": "Speech scheduled for 8 PM.",
+            "timestamp": "2025-04-10T00:00:00Z"
+        },
+        {
+            "title": "Suspicious bag found in Lalitpur mall",
+            "description": "Bomb squad investigating.",
+            "timestamp": "2025-04-10T02:45:00Z"
+        },
+        {
+            "title": "Gas cylinder explosion injures 5 in Pokhara",
+            "description": "Under investigation.",
+            "timestamp": "2025-04-10T07:20:00Z"
+        },
+        {
+            "title": "New COVID variant detected in Kathmandu",
+            "description": "Health authorities on high alert.",
+            "timestamp": "2025-04-09T12:00:00Z"
+        },
+        {
+            "title": "School closed due to water logging",
+            "description": "Heavy rains flood campus area.",
+            "timestamp": "2025-04-10T04:50:00Z"
+        },
+        {
+            "title": "Massive traffic jam at Koteshwor intersection",
+            "description": "Signal failure suspected.",
+            "timestamp": "2025-04-10T06:00:00Z"
+        },
+        {
+            "title": "Internet outage reported in eastern Nepal",
+            "description": "ISP working on resolution.",
+            "timestamp": "2025-04-09T11:00:00Z"
+        },
+        {
+            "title": "Helicopter crash reported in Solukhumbu",
+            "description": "Rescue team on the way.",
+            "timestamp": "2025-04-10T07:45:00Z"
+        },
+        {
+            "title": "Snake found inside government office toilet",
+            "description": "Officials evacuated temporarily.",
+            "timestamp": "2025-04-10T05:20:00Z"
+        },
+        {
+            "title": "Bank robbery attempt foiled in Chitwan",
+            "description": "Police caught the suspect on the spot.",
+            "timestamp": "2025-04-10T06:30:00Z"
+        }
+    
+]

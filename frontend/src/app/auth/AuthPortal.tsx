@@ -1,22 +1,22 @@
-import * as React from 'react';
+'use client';
+
 import { useState } from 'react';
-import { Button } from "@/components/ui/button"; 
-import { Card, CardContent } from "@/components/ui/card"; 
+// import { Button } from "@/components/ui/button"; 
+// import { Card, CardContent } from "@/components/ui/card"; 
 import { User, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { GoogleLogin } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
-
-interface AuthPortalProps {}
+interface AuthPortalProps { }
 
 const AuthPortal: React.FC<AuthPortalProps> = () => {
     const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<string | null>(null);
-    const navigate = useNavigate();
+    const router = useRouter(); // Using Next.js useRouter hook
 
     const [formData, setFormData] = useState({
         username: '',
@@ -34,7 +34,7 @@ const AuthPortal: React.FC<AuthPortalProps> = () => {
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('user', JSON.stringify(res.data.user));
 
-            navigate(res.data.user.role === 'reporter' ? '/reporter-dashboard' : '/client-dashboard');
+            router.push(res.data.user.role === 'reporter' ? '/reporter' : '/client'); // Navigate on success
         } catch (error: any) {
             setErrors(error.response?.data?.message || 'Google login failed');
             console.error('Auth error:', error.response?.data || error);
@@ -55,7 +55,7 @@ const AuthPortal: React.FC<AuthPortalProps> = () => {
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('user', JSON.stringify(res.data.user));
 
-            navigate('/client-dashboard');
+            router.push('/client'); // Navigate after successful login/register
         } catch (err: any) {
             setErrors(err.response?.data?.error || (activeTab === 'login' ? 'Login failed' : 'Registration failed'));
         } finally {
@@ -104,8 +104,8 @@ const AuthPortal: React.FC<AuthPortalProps> = () => {
                             size="large"
                             text="continue_with"
                             shape="rectangular"
-                            clientId="YOUR_GOOGLE_CLIENT_ID"
-                            cookiePolicy="single_host_origin"
+                           
+                           
                         />
                         <button className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
                             <FontAwesomeIcon icon={faFacebook} className="h-5 w-5 text-blue-500" />
@@ -164,9 +164,10 @@ const AuthPortal: React.FC<AuthPortalProps> = () => {
                                     onChange={handleInputChange}
                                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-10"
                                     placeholder="••••••••"
-                                    minLength={activeTab === 'signup' ? "6" : "1"}
+                                    minLength={activeTab === 'signup' ? 6 : 1}
                                     required
                                 />
+
                                 <button
                                     type="button"
                                     className="absolute right-3 top-3.5 text-gray-500 hover:text-gray-700"
